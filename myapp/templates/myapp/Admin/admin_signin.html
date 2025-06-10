@@ -1,0 +1,222 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Sign In - Flight Booking</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet" />
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <style>
+        /* Global Styling */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: #f7f7f7;
+            color: #333;
+        }
+
+        /* Register Page Background */
+        .register-page {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1507521628349-dee9b8e9d1e1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        /* Fallback Gradient */
+        .register-page::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #0077b6 0%, #00b4d8 100%);
+            opacity: 0.8;
+            z-index: -1;
+        }
+
+        /* Sign-In Container */
+        .sign-in-container {
+            max-width: 400px;
+            margin: 50px auto;
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            text-align: center;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        /* Fade-in Animation */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Title and Subtitle */
+        .title {
+            font-size: 28px;
+            font-weight: 600;
+            color: #0077b6;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 30px;
+            font-weight: 300;
+        }
+
+        /* Input Group Styling */
+        .input-group {
+            margin-bottom: 25px;
+            text-align: left;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-wrapper i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #0077b6;
+            font-size: 16px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px 12px 12px 40px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.3s, box-shadow 0.3s;
+            background-color: #f9f9f9;
+        }
+
+        .input-group input:focus {
+            border-color: #0077b6;
+            box-shadow: 0 0 8px rgba(0, 119, 182, 0.2);
+            background-color: #fff;
+        }
+
+        /* Error and Validation Messages */
+        .error,
+        .validation-message {
+            font-size: 14px;
+            margin-top: 5px;
+            margin-bottom: 10px;
+            text-align: left;
+        }
+
+        .error {
+            color: #d32f2f;
+        }
+
+        /* Button Styling */
+        .sign-in-btn {
+            width: 100%;
+            padding: 14px;
+            background-color: #0077b6;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s, box-shadow 0.3s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            position: relative;
+        }
+
+        .sign-in-btn:hover {
+            background-color: #005f8b;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 95, 139, 0.3);
+        }
+
+        /* Link Styling */
+        .back-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .back-link a {
+            color: #0077b6;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .back-link a:hover {
+            text-decoration: underline;
+            color: #005f8b;
+        }
+    </style>
+</head>
+<body>
+    <div class="register-page">
+        <div class="sign-in-container">
+            <h2 class="title">Admin Sign In</h2>
+            <p class="subtitle">Enter your credentials to access the admin panel.</p>
+            
+            <form method="POST" action="{% url 'admin_signin' %}">
+                {% csrf_token %}
+                <div class="input-group">
+                    <label for="admin_username">Admin Username</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-user-shield"></i>
+                        <input type="text" id="admin_username" name="admin_username" required placeholder="Enter admin username" value="{{ admin_username|default_if_none:'' }}" />
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label for="admin_password">Admin Password</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="admin_password" name="admin_password" required placeholder="Enter admin password" />
+                    </div>
+                </div>
+                {% if error %}
+                    <p class="error">{{ error }}</p>
+                {% endif %}
+                <button type="submit" class="sign-in-btn">Sign In <i class="fas fa-sign-in-alt"></i></button>
+            </form>
+
+            <div class="back-link">
+                <p>Back to <a href="{% url 'signin' %}">User Sign In</a></p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

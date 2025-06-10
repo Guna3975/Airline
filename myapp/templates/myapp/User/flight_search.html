@@ -1,0 +1,920 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+_UserProfile<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Explore and book flights with Flight Odyssey by Inido.">
+    <title>Inido Airlines - Select Flights</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', Arial, sans-serif;
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.3)), 
+                url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=2073&auto=format&fit=crop') 
+                no-repeat center center/cover;
+            min-height: 100vh;
+            padding: 25px 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            overflow-x: hidden;
+            color: #fff;
+        }
+
+        body::before, body::after {
+            content: '';
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            filter: blur(100px);
+            z-index: -1;
+            animation: pulse 15s infinite alternate;
+        }
+
+        body::before {
+            width: 350px;
+            height: 350px;
+            top: 5%;
+            left: 5%;
+        }
+
+        body::after {
+            width: 450px;
+            height: 450px;
+            bottom: 5%;
+            right: 5%;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.5; }
+            100% { transform: scale(1.1); opacity: 0.2; }
+        }
+
+        .header-nav {
+            background: linear-gradient(45deg, #1e40af, #06b6d4);
+            padding: 1rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            width: 100%;
+            z-index: 2000;
+            color: #fafafa;
+        }
+
+        .logo-box {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo-plane {
+            font-size: 2rem;
+            color: #f59e0b;
+        }
+
+        .logo-name {
+            font-size: 1.5rem;
+            font-weight: 800;
+            text-transform: uppercase;
+        }
+
+        .nav-bar {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .nav-item {
+            color: #fafafa;
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            z-index: 1;
+        }
+
+        h1 {
+            font-size: 3.2rem;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: 2px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        
+       
+
+        .flights-container {
+            justify-content: start;
+            align-items: stretch;
+            grid-auto-flow: row dense;
+            gap: 25px;
+            padding: 15px 0;
+            width: 100%;
+            max-width: 100%;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        }
+
+        .flight-card {
+            min-height: 280px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 350px;
+            padding: 20px;
+            box-sizing: border-box;
+            background: linear-gradient(135deg, #ffffff 70%, #f0f0f0 100%);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            border-radius: 15px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            overflow: hidden;
+        }
+
+        .flight-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .flight-route {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #ff6200;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .flight-time {
+            font-size: 0.95rem;
+            color: #555;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 5px 10px;
+            border-radius: 5px;
+            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        .flight-details {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .flight-info {
+            font-size: 1.1rem;
+            color: #333;
+        }
+
+        .flight-price {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #2c6e0f;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        .flight-number {
+            font-size: 0.9rem;
+            color: #777;
+            margin-top: 10px;
+        }
+
+        .flight-airline {
+            font-size: 0.95rem;
+            color: #666;
+            margin-top: 5px;
+            font-style: italic;
+        }
+
+        .book-button {
+            margin-top: 15px;
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(90deg, #ff6200, #ff8c00);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s ease, background 0.3s ease;
+        }
+
+        .loader {
+            display: none;
+            border: 6px solid rgba(255, 255, 255, 0.2);
+            border-top: 6px solid #ff6200;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            margin: 30px auto;
+            animation: spin 1s linear infinite;
+            z-index: 1;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .no-results {
+            display: none;
+            text-align: center;
+            font-size: 1.3rem;
+            color: #fff;
+            margin: 30px 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(5px);
+            z-index: 1;
+        }
+
+        .payment-section {
+            display: none;
+            max-width: 1000px;
+            width: 100%;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+            padding: 25px;
+            border-radius: 20px;
+            margin: 20px 0;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(5px);
+            z-index: 1;
+            animation: slideUp 1s ease-out;
+        }
+
+        .payment-section h2 {
+            font-size: 1.8rem;
+            color: #fff;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .payment-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .payment-form label {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .payment-form select, .payment-form input {
+            padding: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            font-size: 1rem;
+            color: #0f2c6e;
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        .payment-form select:focus, .payment-form input:focus {
+            border-color: #ff6200;
+            outline: none;
+            box-shadow: 0 0 5px rgba(255, 98, 0, 0.5);
+        }
+
+        .payment-form button {
+            padding: 12px;
+            background: linear-gradient(90deg, #ff6200, #ff8c00);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .payment-form p {
+            font-size: 1rem;
+            color: #fff;
+            text-align: left;
+        }
+
+        #tickets-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            max-width: 1000px;
+            margin: 20px auto;
+            z-index: 1;
+        }
+
+        .ticket {
+            flex: 1;
+            min-width: 0;
+            background: linear-gradient(135deg, #ffffff 70%, #f0f0f0 100%);
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            margin: 20px 0;
+            z-index: 1;
+            box-sizing: border-box;
+        }
+
+        .ticket h2 {
+            font-size: 1.8rem;
+            color: #ff6200;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .ticket p {
+            font-size: 1.1rem;
+            color: #333;
+            margin: 8px 0;
+        }
+
+        .ticket p strong {
+            color: #2c6e0f;
+        }
+
+        .messages {
+            margin: 1rem 0;
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+            max-width: 900px;
+            width: 100%;
+        }
+
+        .messages .error {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        .messages .success {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        @media (max-width: 768px) {
+            .flights-container { grid-template-columns: 1fr; }
+            h1 { font-size: 2.5rem; }
+            .flight-route { font-size: 1.2rem; }
+            .flight-price { font-size: 1.3rem; }
+            .flight-card { max-width: 100%; }
+           
+            #tickets-container { flex-direction: column; gap: 15px; }
+            .ticket { flex: none; max-width: 100%; }
+            .payment-section, .ticket { max-width: 100%; }
+            .header-nav { flex-direction: column; gap: 1rem; }
+            .nav-bar { flex-wrap: wrap; justify-content: center; }
+        }
+
+        @media (max-width: 480px) {
+            h1 { font-size: 2rem; }
+            .flight-card { min-height: 240px; padding: 15px; }
+        }
+    </style>
+</head>
+<body>
+    <header class="header-nav">
+        <div class="logo-box">
+            <i class="fas fa-plane logo-plane"></i>
+            <span class="logo-name">Inido Airlines</span>
+        </div>
+        <nav class="nav-bar">
+            <a href="{% url 'home_1' %}" class="nav-item">Home</a>
+            <a href="{% url 'logout' %}" class="nav-item">Logout</a>
+        </nav>
+    </header>
+
+    {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+                <p class="{% if message.tags %}{{ message.tags }}{% endif %}">{{ message }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <div class="header">
+        <h1>Select Your Flight</h1>
+    </div>
+
+   
+
+    <div class="loader" id="loader"></div>
+    <div class="no-results" id="no-results">No flights found matching your criteria.</div>
+    <div class="payment-section" id="payment-section">
+        <h2>Payment</h2>
+        <div class="payment-form" id="payment-form">
+            <label for="coupon-code">Coupon Code</label>
+            <div style="display: flex; gap: 10px;">
+                <input type="text" id="coupon-code" placeholder="Enter coupon code (e.g., FLIGHT10)">
+                <button onclick="applyCoupon()">Apply Coupon</button>
+            </div>
+            <p id="price-breakdown"></p>
+            <p id="price-display">Total Amount to Pay: ₹<span id="final-price"></span></p>
+            <label for="payment-amount">Enter Amount (₹)</label>
+            <input type="number" id="payment-amount" placeholder="Enter the final amount" required>
+            <button onclick="processPayment()">Pay Now</button>
+        </div>
+        <div id="tickets-container">
+            <div class="ticket" id="outbound-ticket" style="display: none;">
+                <h2>Outbound Ticket</h2>
+                <p><strong>Ticket Number:</strong> <span id="outbound-ticket-number"></span></p>
+                <p><strong>Route:</strong> <span id="outbound-ticket-route"></span></p>
+                <p><strong>Flight Number:</strong> <span id="outbound-ticket-flight-number"></span></p>
+                <p><strong>Airline:</strong> <span id="outbound-ticket-airline"></span></p>
+                <p><strong>Timing:</strong> <span id="outbound-ticket-time"></span></p>
+                <p><strong>Duration:</strong> <span id="outbound-ticket-duration"></span></p>
+                <p><strong>Date:</strong> <span id="outbound-ticket-date"></span></p>
+                <p><strong>Car Service:</strong> <span id="outbound-ticket-car-service"></span></p>
+                <p><strong>Travelers:</strong> <span id="outbound-ticket-travelers"></span></p>
+                <p><strong>Luggage:</strong> <span id="outbound-ticket-luggage"></span></p>
+                <p><strong>Total Price:</strong> ₹<span id="outbound-ticket-total-price"></span></p>
+                <p><strong>ID:</strong> <span id="outbound-ticket-id"></span></p>
+            </div>
+            <div class="ticket" id="return-ticket" style="display: none;">
+                <h2>Return Ticket</h2>
+                <p><strong>Ticket Number:</strong> <span id="return-ticket-number"></span></p>
+                <p><strong>Route:</strong> <span id="return-ticket-route"></span></p>
+                <p><strong>Flight Number:</strong> <span id="return-ticket-flight-number"></span></p>
+                <p><strong>Airline:</strong> <span id="return-ticket-airline"></span></p>
+                <p><strong>Timing:</strong> <span id="return-ticket-time"></span></p>
+                <p><strong>Duration:</strong> <span id="return-ticket-duration"></span></p>
+                <p><strong>Date:</strong> <span id="return-ticket-date"></span></p>
+                <p><strong>Car Service:</strong> <span id="return-ticket-car-service"></span></p>
+                <p><strong>Travelers:</strong> <span id="return-ticket-travelers"></span></p>
+                <p><strong>Luggage:</strong> <span id="return-ticket-luggage"></span></p>
+                <p><strong>Total Price:</strong> ₹<span id="return-ticket-total-price"></span></p>
+                <p><strong>ID:</strong> <span id="return-ticket-id"></span></p>
+            </div>
+        </div>
+        <button onclick="closeTickets()" class="book-button" style="margin-top: 20px;">Back to Flights</button>
+    </div>
+    <div class="flights-container" id="flights-container"></div>
+
+    <script>
+        // Define cities
+        const cities = [
+            "new york", "london", "paris", "tokyo", "dubai", "sydney",
+            "mumbai", "delhi", "bangalore", "singapore", "chennai", "coimbatore"
+        ];
+
+        // Define base times and durations for each time slot (4 flights)
+        const timeSlotDetails = {
+            morning: {
+                startTimes: ["06:00", "07:00", "08:00", "09:00"],
+                durationBaseMinutes: 120
+            },
+            afternoon: {
+                startTimes: ["12:00", "13:00", "14:00", "15:00"],
+                durationBaseMinutes: 150
+            },
+            evening: {
+                startTimes: ["18:00", "19:00", "20:00", "21:00"],
+                durationBaseMinutes: 180
+            }
+        };
+
+        // Define valid coupons
+        const coupons = {
+            'FLIGHT10': 0.10,
+            'SAVE20': 0.20,
+            'WELCOME5': 0.05
+        };
+
+        // Define car service surcharge
+        const CAR_SERVICE_SURCHARGE = 500;
+
+        // Context from Django with defaults
+        const context = {
+            departure: "{{ departure|escapejs|default:'' }}",
+            destination: "{{ destination|escapejs|default:'' }}",
+            date: "{{ date|escapejs|default:'' }}",
+            time: "{{ time|escapejs|default:'' }}",
+            return_date: "{{ return_date|escapejs|default:'' }}",
+            car_service_destination: {{ car_service_destination|yesno:"true,false"|default:"false" }},
+            car_service_return: {{ car_service_return|yesno:"true,false"|default:"false" }},
+            travelers: {{ travelers|safe|default:'[]' }},
+            luggage: {{ luggage|default:0 }},
+            total_passengers: {{ total_passengers|default:1 }}
+        };
+
+        // Generate flights: 4 per time slot per route
+        function generateAllRoutes() {
+            const flights = [];
+            let flightCounter = 1001;
+            const flightsPerSlot = 4;
+
+            for (let i = 0; i < cities.length; i++) {
+                const departure = cities[i];
+                for (let j = 0; j < cities.length; j++) {
+                    if (i !== j) {
+                        const destination = cities[j];
+                        const route = `${departure.charAt(0).toUpperCase() + departure.slice(1)} → ${destination.charAt(0).toUpperCase() + destination.slice(1)}`;
+                        const routeIndex = (i * cities.length + j) % 100;
+
+                        ['morning', 'afternoon', 'evening'].forEach(timeSlot => {
+                            for (let flightIdx = 0; flightIdx < flightsPerSlot; flightIdx++) {
+                                const details = getFlightDetails(departure, destination, timeSlot, flightIdx, routeIndex);
+                                flights.push({
+                                    flightNumber: `6E-${flightCounter++}`,
+                                    route: route,
+                                    time: details.time,
+                                    duration: details.duration,
+                                    price: details.price,
+                                    airline: "Inido",
+                                    timeSlot: timeSlot,
+                                    id: details.id
+                                });
+                            }
+                        });
+                    }
+                }
+            }
+            return flights;
+        }
+
+        // Generate unique and constant flight details
+        function getFlightDetails(departure, destination, timeSlot, flightIdx, routeIndex) {
+            const slot = timeSlotDetails[timeSlot];
+            const minuteOffset = (routeIndex * 2 + flightIdx * 1) % 10;
+            const durationOffset = (routeIndex + flightIdx * 5) % 20;
+
+            const [startHourStr, startMinuteStr] = slot.startTimes[flightIdx].split(':');
+            let startHour = parseInt(startHourStr);
+            let startMinute = parseInt(startMinuteStr) + minuteOffset;
+            if (startMinute >= 60) {
+                startHour += Math.floor(startMinute / 60);
+                startMinute %= 60;
+            }
+
+            const durationMinutes = slot.durationBaseMinutes + durationOffset;
+            let endHour = startHour + Math.floor((durationMinutes + startMinute) / 60);
+            let endMinute = (startMinute + durationMinutes) % 60;
+
+            const startPeriod = startHour < 12 ? "AM" : "PM";
+            const endPeriod = endHour < 12 ? "AM" : "PM";
+            const startHour12 = startHour % 12 || 12;
+            const endHour12 = endHour % 12 || 12;
+            const time = `${startHour12}:${startMinute.toString().padStart(2, '0')} ${startPeriod} - ${endHour12}:${endMinute.toString().padStart(2, '0')} ${endPeriod}`;
+            const duration = `${Math.floor(durationMinutes / 60)}h ${durationMinutes % 60}m`;
+
+            const abbr = `${departure[0]}${destination[0]}`.toUpperCase();
+            const id = `${abbr}-${timeSlot.toUpperCase().slice(0, 3)}-${routeIndex.toString().padStart(2, '0')}-${flightIdx + 1}`;
+
+            const basePrices = { morning: 3000, afternoon: 3200, evening: 3500 };
+            const price = basePrices[timeSlot] + (routeIndex * 50) + (flightIdx * 75);
+
+            return { time, duration, price, id };
+        }
+
+        // Initialize flights
+        const sampleFlights = [...generateAllRoutes()];
+        let currentFlights = [];
+        let currentTrip = null;
+        let isRoundTrip = !!context.return_date;
+
+        function filterAndDisplayFlights() {
+            const departureCity = context.departure;
+            const destinationCity = context.destination;
+            const travelTime = context.time;
+
+            if (!departureCity || !destinationCity || !travelTime) {
+                alert('Missing flight search criteria. Please go back and provide all details.');
+                return;
+            }
+
+            if (departureCity === destinationCity) {
+                alert('Departure and destination cities cannot be the same.');
+                return;
+            }
+
+            const loader = document.getElementById('loader');
+            const flightsContainer = document.getElementById('flights-container');
+            const noResults = document.getElementById('no-results');
+            
+            const paymentSection = document.getElementById('payment-section');
+
+            flightsContainer.innerHTML = '';
+            noResults.style.display = 'none';
+          
+            paymentSection.style.display = 'none';
+            loader.style.display = 'block';
+
+            setTimeout(() => {
+                loader.style.display = 'none';
+                currentFlights = sampleFlights
+                    .filter(flight => {
+                        const routeParts = flight.route.split(' → ');
+                        const dep = routeParts[0].toLowerCase();
+                        const dest = routeParts[1].toLowerCase();
+                        return dep === departureCity && dest === destinationCity && flight.timeSlot === travelTime;
+                    })
+                    .map(flight => ({
+                        ...flight,
+                        durationMinutes: parseDuration(flight.duration)
+                    }));
+
+                if (currentFlights.length === 0) {
+                    noResults.style.display = 'block';
+                   
+                    return;
+                }
+
+                
+                renderFlights(currentFlights);
+            }, 1000);
+        }
+
+        function parseDuration(duration) {
+            const [hours, minutes] = duration.split('h ');
+            return parseInt(hours) * 60 + parseInt(minutes.replace('m', ''));
+        }
+
+        function renderFlights(flights) {
+            const flightsContainer = document.getElementById('flights-container');
+            flightsContainer.innerHTML = '';
+
+            const displayedFlights = flights.slice(0, 6);
+
+            displayedFlights.forEach(flight => {
+                const card = document.createElement('div');
+                card.className = 'flight-card';
+                card.innerHTML = `
+                    <div class="flight-header">
+                        <span class="flight-route">${flight.route}</span>
+                        <span class="flight-time">${flight.time}</span>
+                    </div>
+                    <div class="flight-details">
+                        <span class="flight-info">${flight.duration}</span>
+                        <span class="flight-price">₹${flight.price.toLocaleString()}</span>
+                    </div>
+                    <div class="flight-number">Flight <i class="fas fa-plane"></i> ${flight.flightNumber}</div>
+                    <div class="flight-airline">${flight.airline}</div>
+                    <button class="book-button" onclick="bookFlight('${flight.flightNumber}', '${flight.route}', ${flight.price}, '${flight.id}', '${flight.time}', '${flight.duration}', '${flight.airline}')">Book Now</button>
+                `;
+                flightsContainer.appendChild(card);
+            });
+        }
+
+        
+
+        function bookFlight(flightNumber, route, price, id, time, duration, airline) {
+            const destinationCity = context.destination;
+            const departureCity = context.departure;
+            const travelTime = context.time;
+            const travelerCount = context.total_passengers;
+
+            const outboundSurcharge = context.car_service_destination ? CAR_SERVICE_SURCHARGE : 0;
+            const outboundPrice = price + outboundSurcharge;
+
+            currentTrip = {
+                outbound: {
+                    flightNumber,
+                    route,
+                    basePrice: price,
+                    surcharge: outboundSurcharge,
+                    originalPrice: outboundPrice,
+                    finalPrice: outboundPrice,
+                    id,
+                    time,
+                    duration,
+                    airline,
+                    carService: context.car_service_destination ? 'Yes' : 'No',
+                    coupon: null
+                },
+                return: null,
+                travelerCount: travelerCount,
+                totalOriginalPrice: outboundPrice * travelerCount,
+                totalFinalPrice: outboundPrice * travelerCount
+            };
+
+            if (isRoundTrip) {
+                const returnFlights = sampleFlights
+                    .filter(flight => {
+                        const routeParts = flight.route.split(' → ');
+                        const dep = routeParts[0].toLowerCase();
+                        const dest = routeParts[1].toLowerCase();
+                        return dep === destinationCity && dest === departureCity && flight.timeSlot === travelTime;
+                    });
+
+                if (returnFlights.length > 0) {
+                    const returnFlight = returnFlights[0];
+                    const returnSurcharge = context.car_service_return ? CAR_SERVICE_SURCHARGE : 0;
+                    const returnPrice = returnFlight.price + returnSurcharge;
+                    currentTrip.return = {
+                        flightNumber: returnFlight.flightNumber,
+                        route: returnFlight.route,
+                        basePrice: returnFlight.price,
+                        surcharge: returnSurcharge,
+                        originalPrice: returnPrice,
+                        finalPrice: returnPrice,
+                        id: returnFlight.id,
+                        time: returnFlight.time,
+                        duration: returnFlight.duration,
+                        airline: returnFlight.airline,
+                        carService: context.car_service_return ? 'Yes' : 'No',
+                        coupon: null
+                    };
+                    currentTrip.totalOriginalPrice += returnPrice * travelerCount;
+                    currentTrip.totalFinalPrice += returnPrice * travelerCount;
+                } else {
+                    alert('No return flights available for the selected time slot.');
+                    return;
+                }
+            }
+
+            const paymentSection = document.getElementById('payment-section');
+            const paymentForm = document.getElementById('payment-form');
+            const outboundTicket = document.getElementById('outbound-ticket');
+            const returnTicket = document.getElementById('return-ticket');
+            const flightsContainer = document.getElementById('flights-container');
+            const finalPriceDisplay = document.getElementById('final-price');
+            const priceBreakdown = document.getElementById('price-breakdown');
+            const couponCodeInput = document.getElementById('coupon-code');
+            const paymentAmountInput = document.getElementById('payment-amount');
+
+            couponCodeInput.value = '';
+            paymentAmountInput.value = '';
+            finalPriceDisplay.textContent = currentTrip.totalFinalPrice.toLocaleString();
+            priceBreakdown.innerHTML = isRoundTrip ?
+                `Outbound Flight: ₹${currentTrip.outbound.basePrice.toLocaleString()} per traveler${currentTrip.outbound.surcharge ? `<br>Outbound Car Service: ₹${currentTrip.outbound.surcharge.toLocaleString()} per traveler` : ''}<br>` +
+                `Return Flight: ₹${currentTrip.return.basePrice.toLocaleString()} per traveler${currentTrip.return.surcharge ? `<br>Return Car Service: ₹${currentTrip.return.surcharge.toLocaleString()} per traveler` : ''}<br>` +
+                `Total per Traveler: ₹${(currentTrip.outbound.originalPrice + currentTrip.return.originalPrice).toLocaleString()}<br>` +
+                `Total: ₹${currentTrip.totalOriginalPrice.toLocaleString()}` :
+                `Outbound Flight: ₹${currentTrip.outbound.basePrice.toLocaleString()} per traveler${currentTrip.outbound.surcharge ? `<br>Outbound Car Service: ₹${currentTrip.outbound.surcharge.toLocaleString()} per traveler` : ''}<br>` +
+                `Total per Traveler: ₹${currentTrip.outbound.originalPrice.toLocaleString()}<br>` +
+                `Total: ₹${currentTrip.totalOriginalPrice.toLocaleString()}`;
+
+            flightsContainer.style.display = 'none';
+            paymentSection.style.display = 'block';
+            paymentForm.style.display = 'flex';
+            outboundTicket.style.display = 'none';
+            returnTicket.style.display = 'none';
+        }
+
+        function applyCoupon() {
+            const couponCode = document.getElementById('coupon-code').value.trim().toUpperCase();
+            const finalPriceDisplay = document.getElementById('final-price');
+            const priceBreakdown = document.getElementById('price-breakdown');
+
+            if (!currentTrip) {
+                alert('No flight selected.');
+                return;
+            }
+
+            if (couponCode && coupons[couponCode]) {
+                const discount = coupons[couponCode];
+                currentTrip.outbound.coupon = couponCode;
+                currentTrip.outbound.finalPrice = Math.round(currentTrip.outbound.originalPrice * (1 - discount));
+                if (isRoundTrip) {
+                    currentTrip.return.coupon = couponCode;
+                    currentTrip.return.finalPrice = Math.round(currentTrip.return.originalPrice * (1 - discount));
+                }
+                currentTrip.totalFinalPrice = (currentTrip.outbound.finalPrice * currentTrip.travelerCount) +
+                                            (isRoundTrip ? currentTrip.return.finalPrice * currentTrip.travelerCount : 0);
+                finalPriceDisplay.textContent = currentTrip.totalFinalPrice.toLocaleString();
+                priceBreakdown.innerHTML = isRoundTrip ?
+                    `Outbound Flight: ₹${currentTrip.outbound.basePrice.toLocaleString()} per traveler${currentTrip.outbound.surcharge ? `<br>Outbound Car Service: ₹${currentTrip.outbound.surcharge.toLocaleString()} per traveler` : ''}<br>` +
+                    `Outbound Total per Traveler: ₹${currentTrip.outbound.originalPrice.toLocaleString()} → ₹${currentTrip.outbound.finalPrice.toLocaleString()} (${discount * 100}% off)<br>` +
+                    `Return Flight: ₹${currentTrip.return.basePrice.toLocaleString()} per traveler${currentTrip.return.surcharge ? `<br>Return Car Service: ₹${currentTrip.return.surcharge.toLocaleString()} per traveler` : ''}<br>` +
+                    `Return Total per Traveler: ₹${currentTrip.return.originalPrice.toLocaleString()} → ₹${currentTrip.return.finalPrice.toLocaleString()} (${discount * 100}% off)<br>` +
+                    `Total: ₹${currentTrip.totalOriginalPrice.toLocaleString()} → ₹${currentTrip.totalFinalPrice.toLocaleString()}` :
+                    `Outbound Flight: ₹${currentTrip.outbound.basePrice.toLocaleString()} per traveler${currentTrip.outbound.surcharge ? `<br>Outbound Car Service: ₹${currentTrip.outbound.surcharge.toLocaleString()} per traveler` : ''}<br>` +
+                    `Total per Traveler: ₹${currentTrip.outbound.originalPrice.toLocaleString()} → ₹${currentTrip.outbound.finalPrice.toLocaleString()} (${discount * 100}% off)<br>` +
+                    `Total: ₹${currentTrip.totalOriginalPrice.toLocaleString()} → ₹${currentTrip.totalFinalPrice.toLocaleString()}`;
+                alert(`Coupon ${couponCode} applied! ${discount * 100}% discount. New total: ₹${currentTrip.totalFinalPrice.toLocaleString()}`);
+            } else {
+                currentTrip.outbound.coupon = null;
+                currentTrip.outbound.finalPrice = currentTrip.outbound.originalPrice;
+                if (isRoundTrip) {
+                    currentTrip.return.coupon = null;
+                    currentTrip.return.finalPrice = currentTrip.return.originalPrice;
+                }
+                currentTrip.totalFinalPrice = (currentTrip.outbound.finalPrice * currentTrip.travelerCount) +
+                                            (isRoundTrip ? currentTrip.return.finalPrice * currentTrip.travelerCount : 0);
+                finalPriceDisplay.textContent = currentTrip.totalFinalPrice.toLocaleString();
+                priceBreakdown.innerHTML = isRoundTrip ?
+                    `Outbound Flight: ₹${currentTrip.outbound.basePrice.toLocaleString()} per traveler${currentTrip.outbound.surcharge ? `<br>Outbound Car Service: ₹${currentTrip.outbound.surcharge.toLocaleString()} per traveler` : ''}<br>` +
+                    `Return Flight: ₹${currentTrip.return.basePrice.toLocaleString()} per traveler${currentTrip.return.surcharge ? `<br>Return Car Service: ₹${currentTrip.return.surcharge.toLocaleString()} per traveler` : ''}<br>` +
+                    `Total per Traveler: ₹${(currentTrip.outbound.originalPrice + currentTrip.return.originalPrice).toLocaleString()}<br>` +
+                    `Total: ₹${currentTrip.totalOriginalPrice.toLocaleString()}` :
+                    `Outbound Flight: ₹${currentTrip.outbound.basePrice.toLocaleString()} per traveler${currentTrip.outbound.surcharge ? `<br>Outbound Car Service: ₹${currentTrip.outbound.surcharge.toLocaleString()} per traveler` : ''}<br>` +
+                    `Total per Traveler: ₹${currentTrip.outbound.originalPrice.toLocaleString()}<br>` +
+                    `Total: ₹${currentTrip.totalOriginalPrice.toLocaleString()}`;
+                alert('Invalid or no coupon code entered.');
+            }
+        }
+
+        function processPayment() {
+            const paymentAmount = parseFloat(document.getElementById('payment-amount').value);
+
+            if (!currentTrip) {
+                alert('No flight selected.');
+                return;
+            }
+
+            if (!context.travelers.length) {
+                alert('No travelers available. Please add travelers first.');
+                return;
+            }
+
+            if (isNaN(paymentAmount) || paymentAmount !== currentTrip.totalFinalPrice) {
+                alert(`Please enter the exact amount: ₹${currentTrip.totalFinalPrice.toLocaleString()}`);
+                return;
+            }
+
+            const bookingData = {
+                outbound_flight: `${currentTrip.outbound.route}, ${currentTrip.outbound.flightNumber}, ${currentTrip.outbound.time}`,
+                outbound_id: currentTrip.outbound.id,
+                base_price: currentTrip.outbound.basePrice,
+                traveler_count: currentTrip.travelerCount,
+                coupon: currentTrip.outbound.coupon || '',
+                travelers: JSON.stringify(context.travelers.map(t => ({ full_name: t.full_name, email: t.email }))),
+                email: context.travelers[0].email,
+                car_service_destination: context.car_service_destination,
+                luggage: context.luggage,
+                date: context.date,
+                return_flight: isRoundTrip ? `${currentTrip.return.route}, ${currentTrip.return.flightNumber}, ${currentTrip.return.time}` : '',
+                return_id: isRoundTrip ? currentTrip.return.id : '',
+                return_date: isRoundTrip ? context.return_date : '',
+                car_service_return: isRoundTrip ? context.car_service_return : false,
+                total_price: currentTrip.totalFinalPrice,
+                outbound: JSON.stringify(currentTrip.outbound),
+                return: isRoundTrip ? JSON.stringify(currentTrip.return) : '{}',
+                csrfmiddlewaretoken: '{{ csrf_token }}'
+            };
+
+            console.log("Sending Booking Data:", bookingData);
+            fetch('/confirm-booking/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: new URLSearchParams(bookingData).toString()
+            })
+            .then(response => {
+                if (!response.ok) throw new Error('Network response was not ok: ' + response.statusText);
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    alert('Booking confirmed! Redirecting to confirmation page.');
+                    window.location.href = `/thank-you/?ticket_number=${encodeURIComponent(data.ticket_number)}`;
+                } else {
+                    throw new Error(data.error || 'Booking failed');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error: ' + error.message);
+            });
+        }
+
+        function closeTickets() {
+            const paymentSection = document.getElementById('payment-section');
+            const flightsContainer = document.getElementById('flights-container');
+            const paymentForm = document.getElementById('payment-form');
+            const outboundTicket = document.getElementById('outbound-ticket');
+            const returnTicket = document.getElementById('return-ticket');
+            const paymentAmount = document.getElementById('payment-amount');
+            const couponCode = document.getElementById('coupon-code');
+
+            paymentSection.style.display = 'none';
+            paymentForm.style.display = 'flex';
+            outboundTicket.style.display = 'none';
+            returnTicket.style.display = 'none';
+            paymentAmount.value = '';
+            couponCode.value = '';
+            currentTrip = null;
+
+            flightsContainer.style.display = 'grid';
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('Context:', context);
+            filterAndDisplayFlights();
+        });
+    </script>
+</body>
+</html>

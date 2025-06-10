@@ -1,0 +1,154 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet" />
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <style>
+        /* Global Styling */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: #f7f7f7;
+            color: #333;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Navigation */
+        nav {
+            width: 250px;
+            background-color: #ffffff;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px 0;
+            position: fixed;
+            height: 100%;
+            overflow-y: auto;
+        }
+
+        nav ul {
+            list-style: none;
+        }
+
+        nav ul li {
+            margin: 10px 0;
+        }
+
+        nav ul li a {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            color: #333;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 16px;
+            transition: background-color 0.3s, color 0.3s, transform 0.2s;
+            border-radius: 8px;
+            margin: 0 10px;
+        }
+
+        nav ul li a i {
+            margin-right: 10px;
+            color: #0077b6;
+            font-size: 18px;
+        }
+
+        nav ul li a:hover {
+            background-color: #0077b6;
+            color: #ffffff;
+            
+        }
+
+        nav ul li a:hover i {
+            color: #ffffff;
+        }
+
+        /* Main Content Area */
+        main {
+            flex: 1;
+            margin-left: 250px;
+            padding: 40px;
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1507521628349-dee9b8e9d1e1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Fallback Gradient for Main */
+        main::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #0077b6 0%, #00b4d8 100%);
+            opacity: 0.8;
+            z-index: -1;
+        }
+
+        /* Dashboard Container */
+        .dashboard-container {
+            max-width: 600px;
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            text-align: center;
+            
+            border: 1px solid rgba(0, 119, 182, 0.1);
+        }
+
+        /* Fade-in Animation */
+        
+
+        /* Title and Subtitle */
+        .dashboard-container h1 {
+            font-size: 28px;
+            font-weight: 600;
+            color: #0077b6;
+            margin-bottom: 10px;
+        }
+
+        .dashboard-container p {
+            font-size: 16px;
+            color: #666;
+            font-weight: 300;
+        }
+
+        /* Responsive Design */
+    </style>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="{% url 'admin_dashboard' %}"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+            <li><a href="{% url 'admin_payment_history' %}"><i class="fas fa-money-bill-wave"></i> Payment History</a></li>
+            <li><a href="{% url 'admin_users' %}"><i class="fas fa-users"></i> User Details</a></li>
+            <li><a href="{% url 'admin_notifications' %}"><i class="fas fa-bell"></i> Notifications</a></li>
+            <li><a href="{% url 'admin_flight_delays' %}"><i class="fas fa-plane-slash"></i> Flight Delays</a></li>
+            <li><a href="{% url 'admin_seat_inventory' %}"><i class="fas fa-plane-slash"></i> Seat Inventory</a></li>
+            <li><a href="{% url 'admin_user_queries' %}"><i class="fas fa-question-circle"></i> User Queries</a></li>
+        </ul>
+    </nav>
+    <main>
+        <div class="dashboard-container">
+            <h1>Welcome to the Admin Dashboard</h1>
+            <p>Select a section from the menu to manage the system.</p>
+        </div>
+    </main>
+</body>
+</html>

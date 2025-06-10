@@ -1,0 +1,81 @@
+# Byte-compiled / optimized / DLL files
+_pycache_/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Django stuff:
+*.log
+*.pot
+*.pyc
+*.mo
+local_settings.py
+db.sqlite3
+media/
+staticfiles/
+
+# Ignore Django migrations (optional)
+*/migrations/_pycache_/
+/migrations/.pyc
+/migrations/.pyo
+
+# If you store secrets in .env
+.env
+.env.*
+
+# Virtual environment
+venv/
+ENV/
+env/
+.venv/
+pip-wheel-metadata/
+
+# VS Code settings
+.vscode/
+
+# PyCharm settings
+.idea/
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Testing
+.coverage
+coverage.xml
+htmlcov/
+.tox/
+.nox/
+.pytest_cache/
+test-results/
+
+# mypy, pylint, etc.
+.mypy_cache/
+.pyre/
+.pytype/
+.pylint.d/
+
+# Build stuff
+build/
+dist/
+*.egg-info/
+*.eggs/
+
+# Node (if using npm/yarn for front-end in Django)
+node_modules/
+package-lock.json
+yarn.lock
+
+# Static root if you collectstatic to a directory
+static/
+
+# Docker
+*.pid
+*.tar
+docker-compose.override.yml

@@ -1,0 +1,126 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Register - Flight Booking</title>
+   <link rel="stylesheet" href="{% static 'myapp/styles.css' %}" />
+    <!-- <link rel="stylesheet" href="/myapp/static/myapp/styles.css" />-->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet" />
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class="register-page">
+        <div class="register-container">
+            <!-- Logo/Branding -->
+            <div class="logo">
+                <i class="fas fa-plane-departure fa-2x"></i>
+                <h1 class="app-name">Flight Booker</h1>
+            </div>
+            <h2 class="title">Create Your Account</h2>
+            <p class="subtitle">Join us to book your next flight with ease!</p>
+            
+            <!-- Registration Form -->
+            <form method="POST" action="{% url 'register' %}" id="register-form">
+                {% csrf_token %}
+                <div class="input-group">
+                    <label for="id_username">Username</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-user"></i>
+                        {{ form.username }}
+                    </div>
+                    {% if form.username.errors %}
+                        <p class="error">{{ form.username.errors }}</p>
+                    {% endif %}
+                </div>
+                <div class="input-group">
+                    <label for="id_email">Email</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-envelope"></i>
+                        {{ form.email }}
+                    </div>
+                    {% if form.email.errors %}
+                        <p class="error">{{ form.email.errors }}</p>
+                    {% endif %}
+                    <p class="validation-message" id="email-validation"></p>
+                </div>
+                <div class="input-group">
+                    <label for="id_password1">Password</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-lock"></i>
+                        {{ form.password1 }}
+                    </div>
+                    {% if form.password1.errors %}
+                        <p class="error">{{ form.password1.errors }}</p>
+                    {% endif %}
+                    <p class="validation-message" id="password-strength"></p>
+                </div>
+                <div class="input-group">
+                    <label for="id_password2">Confirm Password</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-lock"></i>
+                        {{ form.password2 }}
+                    </div>
+                    {% if form.password2.errors %}
+                        <p class="error">{{ form.password2.errors }}</p>
+                    {% endif %}
+                </div>
+                {% if form.non_field_errors %}
+                    <p class="error">{{ form.non_field_errors }}</p>
+                {% endif %}
+                <button type="submit" class="register-btn" id="register-btn">
+                    <span class="btn-text">Register Now</span>
+                    <i class="fas fa-user-plus"></i>
+                    <span class="loading-icon"><i class="fas fa-spinner fa-spin"></i></span>
+                </button>
+            </form>
+
+            <div class="signin-link">
+                <p>Already have an account? <a href="{% url 'signin' %}">Sign in here</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript for Real-Time Validation and Loading Animation -->
+    <script>
+        // Loading Animation
+        document.getElementById('register-form').addEventListener('submit', function() {
+            const btn = document.getElementById('register-btn');
+            btn.classList.add('loading');
+        });
+
+        // Email Validation
+        const emailInput = document.getElementById('id_email');
+        const emailValidation = document.getElementById('email-validation');
+        emailInput.addEventListener('input', function() {
+            const email = emailInput.value;
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                emailValidation.textContent = 'Please enter a valid email address.';
+                emailValidation.style.color = '#d32f2f';
+            } else {
+                emailValidation.textContent = 'Email looks good!';
+                emailValidation.style.color = '#28a745';
+            }
+        });
+
+        // Password Strength
+        const passwordInput = document.getElementById('id_password1');
+        const passwordStrength = document.getElementById('password-strength');
+        passwordInput.addEventListener('input', function() {
+            const password = passwordInput.value;
+            if (password.length < 8) {
+                passwordStrength.textContent = 'Password must be at least 8 characters long.';
+                passwordStrength.style.color = '#d32f2f';
+            } else if (!/[A-Z]/.test(password) || !/[0-9]/.test(password)) {
+                passwordStrength.textContent = 'Password must include at least one uppercase letter and one number.';
+                passwordStrength.style.color = '#d32f2f';
+            } else {
+                passwordStrength.textContent = 'Password looks strong!';
+                passwordStrength.style.color = '#28a745';
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,165 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Ticket - Inido Airlines</title>
+    <link rel="stylesheet" href="{% static 'myapp/home_1.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <style>
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .ticket-section {
+            background: #fff;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        .ticket-section h2 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #1a2a6c;
+        }
+        .ticket-details p {
+            margin: 5px 0;
+            font-size: 1rem;
+            color: #333;
+        }
+        .ticket-details p strong {
+            color: #1a2a6c;
+        }
+        .search-form {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .search-form input[type="text"] {
+            padding: 10px;
+            width: 300px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+        .search-form button {
+            padding: 10px 20px;
+            background: #1a2a6c;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+        .messages {
+            position: fixed;
+            top: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            width: 90%;
+            max-width: 600px;
+        }
+        .messages p {
+            background: #ff4d4d;
+            color: #fff;
+            padding: 10px 20px;
+            margin: 5px 0;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 1rem;
+        }
+        .messages p.success { background: #28a745; }
+        .messages p.error { background: #ff4d4d; }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="logo">
+            <i class="fas fa-plane fa-2x"></i>
+            <h1 class="app-name">Inido Airlines</h1>
+        </div>
+        <nav class="nav">
+            <a href="{% url 'home_1' %}" class="nav-link">Home</a>
+            <a href="{% url 'view-ticket' %}" class="nav-link active">View Ticket</a>
+            <a href="{% url 'cancel_booking' %}" class="nav-link">Cancel Booking</a>
+            <a href="{% url 'help_desk' %}" class="nav-link">Help Desk</a>
+            <a href="{% url 'logout' %}" class="nav-link">Logout</a>
+        </nav>
+    </header>
+
+    <!-- Messages -->
+    {% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+            <p class="{% if message.tags %}{{ message.tags }}{% endif %}">{{ message }}</p>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- Main Content -->
+    <div class="container">
+        <h1>View Your Ticket</h1>
+        <form class="search-form" method="POST">
+            {% csrf_token %}
+            <input type="text" name="ticket_id" placeholder="Enter Ticket ID" value="{{ ticket_id|default_if_none:'' }}">
+            <button type="submit">Search</button>
+        </form>
+
+        {% if outbound %}
+        <div class="ticket-section">
+            <h2>Outbound Flight</h2>
+            <div class="ticket-details">
+                <p><strong>Ticket Number:</strong> {{ outbound.ticket_number }}</p>
+                <p><strong>Route:</strong> {{ outbound.route }}</p>
+                <p><strong>Flight Number:</strong> {{ outbound.flight_number }}</p>
+                <p><strong>Airline:</strong> {{ outbound.airline }}</p>
+                <p><strong>Timing:</strong> {{ outbound.timing }}</p>
+                <p><strong>Duration:</strong> {{ outbound.duration }}</p>
+                <p><strong>Date:</strong> {{ outbound.date }}</p>
+                <p><strong>Car Service:</strong> {{ outbound.car_service }}</p>
+                <p><strong>Travelers:</strong> {{ outbound.travelers }}</p>
+                <p><strong>Luggage:</strong> {{ outbound.luggage }}</p>
+                <p><strong>Total Price:</strong> ${{ outbound.total_price }}</p>
+                <p><strong>ID:</strong> {{ outbound.id }}</p>
+            </div>
+        </div>
+        {% endif %}
+
+        {% if return %}
+        <div class="ticket-section">
+            <h2>Return Flight</h2>
+            <div class="ticket-details">
+                <p><strong>Ticket Number:</strong> {{ return.ticket_number }}</p>
+                <p><strong>Route:</strong> {{ return.route }}</p>
+                <p><strong>Flight Number:</strong> {{ return.flight_number }}</p>
+                <p><strong>Airline:</strong> {{ return.airline }}</p>
+                <p><strong>Timing:</strong> {{ return.timing }}</p>
+                <p><strong>Duration:</strong> {{ return.duration }}</p>
+                <p><strong>Date:</strong> {{ return.date }}</p>
+                <p><strong>Car Service:</strong> {{ return.car_service }}</p>
+                <p><strong>Travelers:</strong> {{ return.travelers }}</p>
+                <p><strong>Luggage:</strong> {{ return.luggage }}</p>
+                <p><strong>Total Price:</strong> ${{ return.total_price }}</p>
+                <p><strong>ID:</strong> {{ return.id }}</p>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>© 2025 Inido Airlines Reservation System. All rights reserved.</p>
+        <div class="social-links">
+            <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UPI Payment Integration</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .payment-container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #paymentMessage {
+            margin-top: 15px;
+            color: #333;
+        }
+        .upi-qr {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+        }
+        .upi-qr img {
+            max-width: 200px;
+        }
+    </style>
+</head>
+<body>
+    <div class="payment-container">
+        <h2>Complete Your Payment with UPI</h2>
+        <div class="form-group">
+            <label for="flightId">Flight ID:</label>
+            <input type="text" id="flightId" value="6E-1001" readonly>
+        </div>
+        <div class="form-group">
+            <label for="amount">Amount (₹):</label>
+            <input type="text" id="amount" value="3500" readonly>
+        </div>
+        <div class="form-group">
+            <label for="upiId">UPI ID:</label>
+            <input type="text" id="upiId" placeholder="Enter your UPI ID (e.g., example@oksbi)">
+        </div>
+        <button onclick="processUpiPayment()">Pay with UPI</button>
+        <div id="paymentMessage"></div>
+        <div class="upi-qr" id="upiQr">
+            <p>Scan this QR code with your UPI app:</p>
+            <img src="https://via.placeholder.com/200x200.png?text=UPI+QR" alt="UPI QR Code">
+        </div>
+    </div>
+
+    <script>
+        function processUpiPayment() {
+            const flightId = document.getElementById('flightId').value;
+            const amount = document.getElementById('amount').value;
+            const upiId = document.getElementById('upiId').value;
+            const messageDiv = document.getElementById('paymentMessage');
+            const upiQrDiv = document.getElementById('upiQr');
+
+            if (!upiId) {
+                messageDiv.innerHTML = 'Please enter a valid UPI ID.';
+                messageDiv.style.color = '#dc3545';
+                return;
+            }
+
+            messageDiv.innerHTML = 'Processing UPI payment...';
+            messageDiv.style.color = '#333';
+            upiQrDiv.style.display = 'block';
+
+            setTimeout(() => {
+                messageDiv.innerHTML = `UPI payment of ₹${amount} for Flight ${flightId} processed successfully with ${upiId}!`;
+                messageDiv.style.color = '#28a745';
+            }, 2000);
+        }
+    </script>
+</body>
+</html>

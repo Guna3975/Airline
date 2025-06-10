@@ -1,0 +1,749 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Book your dream flight with Inido Airlines - luxury awaits.">
+    <title>Book Your Flight - Inido Airlines</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <style>
+        :root {
+            --cosmic-blue: #1e40af;
+            --neon-teal: #06b6d4;
+            --solar-gold: #f59e0b;
+            --void-black: #0a0a0a;
+            --star-white: #fafafa;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', sans-serif;
+        }
+        body {
+            background: var(--void-black);
+            color: var(--star-white);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        html { font-size: 16px; }
+        body { font-size: 1rem; line-height: 1.6; }
+        .header {
+            background: linear-gradient(45deg, var(--cosmic-blue), var(--neon-teal));
+            padding: 1rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            width: 100%;
+            z-index: 2000;
+        }
+        .logo-box { display: flex; align-items: center; gap: 1rem; }
+        .logo-plane { font-size: 2rem; color: var(--solar-gold); }
+        .logo-name {
+            font-size: 1.5rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--star-white);
+        }
+        .nav-bar { display: flex; gap: 1.5rem; }
+        .nav-item {
+            color: var(--star-white);
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            background: rgba(255, 255, 255, 0.1);
+        }
+        .nav-item.active { background: var(--solar-gold); color: var(--void-black); }
+        .hero {
+            position: relative;
+            min-height: 50vh;
+            max-height: 70vh;
+            overflow: hidden;
+        }
+        .hero-canvas { position: absolute; inset: 0; }
+        .hero-content {
+            position: absolute;
+            top: 50%;
+            left: 5%;
+            transform: translateY(-50%);
+            padding: 1rem;
+        }
+        .hero-title {
+            font-size: clamp(2rem, 4vw, 4rem);
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        .hero-tagline {
+            font-size: clamp(1rem, 2vw, 1.8rem);
+            font-weight: 300;
+            margin-top: 0.5rem;
+            color: var(--neon-teal);
+        }
+        .booking-pod {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+            position: relative;
+            z-index: 100;
+        }
+        .pod-wrapper { background: rgba(255, 255, 255, 0.95); padding: 2rem; border-radius: 20px; }
+        .trip-selector { margin-bottom: 1.5rem; text-align: center; }
+        .selector-bar {
+            display: inline-flex;
+            background: var(--cosmic-blue);
+            border-radius: 50px;
+            padding: 0.3rem;
+        }
+        .selector-tab {
+            padding: 0.75rem 2rem;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--star-white);
+            background: none;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+        }
+        .selector-tab.active { background: var(--neon-teal); }
+        .input-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+        .input-box { display: block; }
+        .input-label {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--void-black);
+            margin-bottom: 0.5rem;
+        }
+        .input-wrapper { position: relative; }
+        .input-glyph {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--neon-teal);
+            font-size: 1.2rem;
+        }
+        .input-field {
+            width: 100%;
+            padding: 1rem 1rem 1rem 3rem;
+            border: none;
+            border-radius: 12px;
+            background: var(--star-white);
+            font-size: 1rem;
+            color: var(--void-black);
+        }
+        .input-field[readonly] { cursor: pointer; background: #e5e7eb; }
+        .launch-button {
+            background: var(--solar-gold);
+            padding: 1.2rem;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--void-black);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 1rem;
+            opacity: 0.5;
+            pointer-events: none;
+        }
+        .launch-button.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .send-otp-button {
+            background: var(--neon-teal);
+            padding: 1rem;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--void-black);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 1rem;
+            opacity: 0.5;
+            pointer-events: none;
+        }
+        .send-otp-button.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .button-loader { display: none; }
+        .footer { background: var(--cosmic-blue); padding: 2rem; text-align: center; }
+        .footer-note { font-size: 0.9rem; font-weight: 400; }
+        .footer-socials {
+            margin-top: 1rem;
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+        }
+        .social-link { color: var(--star-white); font-size: 1.5rem; }
+        .car-service-box {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            border-radius: 12px;
+            background: rgba(0, 0, 0, 0.05);
+        }
+        .car-service-box label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1rem;
+            color: var(--void-black);
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+        .car-service-box input[type="checkbox"] {
+            width: 1.2rem;
+            height: 1.2rem;
+            accent-color: var(--neon-teal);
+        }
+        .verification-section {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 12px;
+        }
+        .verification-section p {
+            font-size: 0.95rem;
+            color: var(--void-black);
+            font-weight: 400;
+            line-height: 1.5;
+        }
+        .verification-section a {
+            color: var(--neon-teal);
+            font-weight: 600;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        .verification-section a:hover {
+            color: var(--solar-gold);
+            text-decoration: underline;
+        }
+        @media (max-width: 1024px) {
+            .hero { min-height: 40vh; }
+            .booking-pod { margin: 1rem auto; }
+            .pod-wrapper { padding: 1.5rem; }
+        }
+        @media (max-width: 768px) {
+            .hero-title { font-size: 2.5rem; }
+            .hero-tagline { font-size: 1.2rem; }
+            .header { padding: 1rem 2%; }
+            .logo-plane { font-size: 1.5rem; }
+            .logo-name { font-size: 1.2rem; }
+            .nav-item { font-size: 0.9rem; padding: 0.4rem 0.8rem; }
+        }
+        @media (max-width: 480px) {
+            .header { flex-direction: column; gap: 0.5rem; padding: 0.5rem 2%; }
+            .nav-bar { flex-direction: column; gap: 0.5rem; }
+            .selector-bar { flex-direction: column; gap: 0.5rem; }
+            .hero { min-height: 30vh; }
+            .hero-title { font-size: 1.8rem; }
+            .hero-tagline { font-size: 1rem; }
+            .pod-wrapper { padding: 1rem; }
+        }
+        .traveler-details {
+            margin-top: 2rem;
+            padding: 2rem;
+            background: linear-gradient(135deg, var(--cosmic-blue), var(--neon-teal));
+            border-radius: 15px;
+        }
+        .traveler-details h3 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--solar-gold);
+            text-align: center;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+        .traveler-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+        .traveler-card {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 2px solid var(--solar-gold);
+        }
+        .traveler-card p {
+            font-size: 1rem;
+            color: var(--void-black);
+            margin: 0.6rem 0;
+            font-weight: 400;
+            line-height: 1.4;
+        }
+        .traveler-card p strong {
+            color: var(--neon-teal);
+            font-weight: 600;
+        }
+        .traveler-luggage {
+            font-size: 1.1rem;
+            color: var(--solar-gold);
+            text-align: center;
+            margin-top: 1rem;
+            font-weight: 600;
+        }
+        .traveler-empty {
+            font-size: 1rem;
+            color: var(--star-white);
+            text-align: center;
+            font-weight: 300;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+        }
+        .traveler-empty a {
+            color: var(--solar-gold);
+            font-weight: 600;
+            text-decoration: none;
+        }
+        .error-message {
+            color: red;
+            font-size: 0.8rem;
+            margin-top: 0.2rem;
+            min-height: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo-box">
+            <i class="fas fa-plane logo-plane"></i>
+            <span class="logo-name">Inido Airlines</span>
+        </div>
+        <nav class="nav-bar">
+            <a href="{% url 'home_1' %}" class="nav-item">Home</a>
+            <a href="{% url 'home_2' %}" class="nav-item active">Book Now</a>
+            <a href="{% url 'logout' %}" class="nav-item">Logout</a>
+        </nav>
+    </header>
+    <section class="hero">
+        <div class="hero-canvas"></div>
+        <div class="hero-content">
+            <h1 class="hero-title">Fly Beyond Limits</h1>
+            <p class="hero-tagline">Your luxury escape starts here.</p>
+        </div>
+    </section>
+    <section class="booking-pod">
+        <div class="pod-wrapper">
+            <form method="GET" action="{% url 'search_flights' %}" class="booking-engine" aria-label="Flight Booking">
+                {% csrf_token %}
+                <div class="trip-selector">
+                    <div class="selector-bar">
+                        <button type="button" class="selector-tab active" data-trip="one-way">One Way</button>
+                        <button type="button" class="selector-tab" data-trip="round-trip">Round Trip</button>
+                    </div>
+                </div>
+                <div class="input-grid">
+                    <div class="input-box from-box">
+                        <label for="departure" class="input-label">Take Off</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-plane-departure input-glyph"></i>
+                            <select id="departure" name="departure" required class="input-field">
+                                <option value="" disabled selected>Origin</option>
+                                <option value="new york">New York</option>
+                                <option value="paris">Paris</option>
+                                <option value="tokyo">Tokyo</option>
+                                <option value="london">London</option>
+                                <option value="dubai">Dubai</option>
+                                <option value="singapore">Singapore</option>
+                                <option value="sydney">Sydney</option>
+                                <option value="mumbai">Mumbai</option>
+                                <option value="delhi">Delhi</option>
+                                <option value="bangalore">Bangalore</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="input-box to-box">
+                        <label for="arrival" class="input-label">Land At</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-plane-arrival input-glyph"></i>
+                            <select id="arrival" name="destination" required class="input-field">
+                                <option value="" disabled selected>Destination</option>
+                                <option value="new york">New York</option>
+                                <option value="paris">Paris</option>
+                                <option value="tokyo">Tokyo</option>
+                                <option value="london">London</option>
+                                <option value="dubai">Dubai</option>
+                                <option value="singapore">Singapore</option>
+                                <option value="sydney">Sydney</option>
+                                <option value="mumbai">Mumbai</option>
+                                <option value="delhi">Delhi</option>
+                                <option value="bangalore">Bangalore</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="input-box date-box">
+                        <label for="depart-date" class="input-label">Depart</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-calendar-check input-glyph"></i>
+                            <input type="date" id="depart-date" name="date" required min="{% now 'Y-m-d' %}" class="input-field">
+                        </div>
+                    </div>
+                    <div class="input-box date-box return-box" style="display: none;">
+                        <label for="return-date" class="input-label">Return</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-calendar-check input-glyph"></i>
+                            <input type="date" id="return-date" name="return_date" min="{% now 'Y-m-d' %}" class="input-field">
+                        </div>
+                    </div>
+                    <div class="input-box time-box">
+                        <label for="travel-time" class="input-label">Preferred Time</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-clock input-glyph"></i>
+                            <select id="travel-time" name="time" required class="input-field">
+                                <option value="" disabled selected>Select Time</option>
+                                <option value="morning">Morning (6 AM - 12 PM)</option>
+                                <option value="afternoon">Afternoon (12 PM - 6 PM)</option>
+                                <option value="evening">Evening (6 PM - 12 AM)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="input-box travelers-box">
+                        <label for="travelers" class="input-label">Passengers</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-user-friends input-glyph"></i>
+                            <input type="text" id="travelers" name="travelers_class" value="{{ total_passengers }} Traveler(s)" readonly class="input-field">
+                            <input type="hidden" id="total-passengers" value="{{ total_passengers }}">
+                        </div>
+                    </div>
+                </div>
+                <div class="car-service-box">
+                    <label>
+                        <input type="checkbox" name="car_service_destination" value="yes">
+                        Book a travel car at destination
+                    </label>
+                    <label class="car-service-return" style="display: none;">
+                        <input type="checkbox" name="car_service_return" value="yes">
+                        Book a travel car at origin (return trip)
+                    </label>
+                </div>
+                <div class="verification-section">
+                    <p>To proceed with your booking, please verify your account with Twilio for secure messaging and authentication. <a href="https://www.twilio.com/en-us/messaging" target="_blank">Verify your account with Twilio</a>.</p>
+                </div>
+                <div class="input-grid">
+                    <div class="input-box">
+                        <label for="sid" class="input-label">SID <span style="color: red;">*</span></label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-key input-glyph"></i>
+                            <input type="text" id="sid" name="sid" required class="input-field" value="{{ sid|default:'' }}" placeholder="Enter SID">
+                        </div>
+                        <div class="error-message" id="sid-error"></div>
+                    </div>
+                    <div class="input-box">
+                        <label for="token" class="input-label">Token <span style="color: red;">*</span></label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-lock input-glyph"></i>
+                            <input type="text" id="token" name="token" required class="input-field" value="{{ token|default:'' }}" placeholder="Enter Token">
+                        </div>
+                        <div class="error-message" id="token-error"></div>
+                    </div>
+                    <div class="input-box">
+                        <label for="twilio_number" class="input-label">Twilio Number <span style="color: red;">*</span></label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-phone input-glyph"></i>
+                            <input type="text" id="twilio_number" name="twilio_number" required class="input-field" value="{{ twilio_number|default:'' }}" placeholder="Enter Twilio Number (e.g., +123...)">
+                        </div>
+                        <div class="error-message" id="twilio_number-error"></div>
+                    </div>
+                    <div class="input-box">
+                        <label for="your_number" class="input-label">Your Number <span style="color: red;">*</span></label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-mobile-alt input-glyph"></i>
+                            <input type="text" id="your_number" name="your_number" required class="input-field" value="{{ your_number|default:'' }}" placeholder="Enter Your Number (e.g., +91...)">
+                        </div>
+                        <div class="error-message" id="your_number-error"></div>
+                    </div>
+                    <div class="input-box">
+                        <label for="otp" class="input-label">OTP <span style="color: red;">*</span></label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-shield-alt input-glyph"></i>
+                            <input type="text" id="otp" name="otp" required class="input-field" value="{{ otp|default:'' }}" placeholder="Enter OTP">
+                        </div>
+                        <div class="error-message" id="otp-error"></div>
+                    </div>
+                </div>
+                <button type="button" class="send-otp-button" id="send-otp-button">
+                    <span class="button-label">Send OTP</span>
+                    <i class="fas fa-paper-plane button-icon"></i>
+                    <span class="button-loader"><i class="fas fa-spinner"></i></span>
+                </button>
+                <button type="submit" class="launch-button" id="launch-button">
+                    <span class="button-label">Launch Journey</span>
+                    <i class="fas fa-rocket button-rocket"></i>
+                    <span class="button-loader"><i class="fas fa-spinner"></i></span>
+                </button>
+            </form>
+            <div class="traveler-details">
+                <h3>Traveler Details ({{ total_passengers }})</h3>
+                {% if travelers %}
+                    <div class="traveler-grid">
+                        {% for traveler in travelers %}
+                            <div class="traveler-card">
+                                <p><strong>Name:</strong> {{ traveler.full_name }}</p>
+                                <p><strong>Age:</strong> {{ traveler.age }}</p>
+                                <p><strong>Gender:</strong> {{ traveler.gender|title }}</p>
+                                <p><strong>Class:</strong> {{ traveler.travel_class|title }}</p>
+                                <p><strong>Mobile:</strong> {{ traveler.mobile }}</p>
+                                <p><strong>Email:</strong> {{ traveler.email }}</p>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <p class="traveler-luggage"><strong>Total Luggage:</strong> {{ luggage }} kg</p>
+                {% else %}
+                    <p class="traveler-empty">No travelers added yet. <a href="{% url 't_1' %}">Add now!</a></p>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+    <footer class="footer">
+        <p class="footer-note">© 2025 Inido Airlines - Soar in Style</p>
+        <div class="footer-socials">
+            <a href="#" class="social-link" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="social-link" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="social-link" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+        </div>
+    </footer>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const tabs = document.querySelectorAll('.selector-tab');
+            const returnBox = document.querySelector('.return-box');
+            const carServiceReturn = document.querySelector('.car-service-return');
+            const launchButton = document.getElementById('launch-button');
+            const sendOtpButton = document.getElementById('send-otp-button');
+            const form = document.querySelector('.booking-engine');
+            const sid = document.getElementById('sid');
+            const token = document.getElementById('token');
+            const twilioNumber = document.getElementById('twilio_number');
+            const yourNumber = document.getElementById('your_number');
+            const otp = document.getElementById('otp');
+            const errors = {
+                sid: document.getElementById('sid-error'),
+                token: document.getElementById('token-error'),
+                twilioNumber: document.getElementById('twilio_number-error'),
+                yourNumber: document.getElementById('your_number-error'),
+                otp: document.getElementById('otp-error')
+            };
+
+            function setError(inputId, message) {
+                if (errors[inputId]) errors[inputId].textContent = message;
+            }
+
+            function clearError(inputId) {
+                if (errors[inputId]) errors[inputId].textContent = '';
+            }
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    if (tab.dataset.trip === 'round-trip') {
+                        returnBox.style.display = 'block';
+                        document.getElementById('return-date').setAttribute('required', 'true');
+                        carServiceReturn.style.display = 'block';
+                    } else {
+                        returnBox.style.display = 'none';
+                        document.getElementById('return-date').removeAttribute('required');
+                        carServiceReturn.style.display = 'none';
+                    }
+                });
+            });
+
+            document.getElementById('travelers').addEventListener('click', () => {
+                window.location.href = "{% url 't_1' %}";
+            });
+
+            function checkFormFields() {
+                const phoneRegex = /^\+\d{10,12}$/;
+                console.log('Field Values:', {
+                    sid: sid.value,
+                    token: token.value,
+                    twilioNumber: twilioNumber.value,
+                    yourNumber: yourNumber.value,
+                    sidTrim: sid.value.trim(),
+                    tokenTrim: token.value.trim(),
+                    twilioNumberTrim: twilioNumber.value.trim(),
+                    yourNumberTrim: yourNumber.value.trim(),
+                    twilioValid: phoneRegex.test(twilioNumber.value.trim()),
+                    yourNumberValid: phoneRegex.test(yourNumber.value.trim())
+                });
+
+                let isValid = true;
+                if (!sid.value.trim()) {
+                    setError('sid', 'SID is required');
+                    isValid = false;
+                } else {
+                    clearError('sid');
+                }
+
+                if (!token.value.trim()) {
+                    setError('token', 'Token is required');
+                    isValid = false;
+                } else {
+                    clearError('token');
+                }
+
+                if (!twilioNumber.value.trim()) {
+                    setError('twilioNumber', 'Twilio Number is required');
+                    isValid = false;
+                } else if (!phoneRegex.test(twilioNumber.value.trim())) {
+                    setError('twilioNumber', 'Enter a valid phone number (e.g., +1234567890)');
+                    isValid = false;
+                } else {
+                    clearError('twilioNumber');
+                }
+
+                if (!yourNumber.value.trim()) {
+                    setError('yourNumber', 'Your Number is required');
+                    isValid = false;
+                } else if (!phoneRegex.test(yourNumber.value.trim())) {
+                    setError('yourNumber', 'Enter a valid phone number (e.g., +1234567890)');
+                    isValid = false;
+                } else {
+                    clearError('yourNumber');
+                }
+
+                if (!otp.value.trim()) {
+                    setError('otp', 'OTP is required');
+                    isValid = false;
+                } else {
+                    clearError('otp');
+                }
+
+                const otpFieldsFilled = sid.value.trim() && token.value.trim() && twilioNumber.value.trim() && yourNumber.value.trim() && phoneRegex.test(twilioNumber.value.trim()) && phoneRegex.test(yourNumber.value.trim());
+                const allFieldsFilled = otpFieldsFilled && otp.value.trim();
+
+                sendOtpButton.classList.toggle('active', otpFieldsFilled);
+                launchButton.classList.toggle('active', allFieldsFilled);
+                console.log('Validation Result:', {
+                    otpFieldsFilled: otpFieldsFilled,
+                    sendOtpButtonActive: sendOtpButton.classList.contains('active'),
+                    classList: sendOtpButton.classList
+                });
+            }
+
+            // Ensure initial check after all elements are loaded
+            window.addEventListener('load', () => {
+                console.log('Window fully loaded, triggering initial check...');
+                checkFormFields();
+                [sid, token, twilioNumber, yourNumber, otp].forEach(input => {
+                    if (input.value.trim()) input.dispatchEvent(new Event('input'));
+                });
+            });
+
+            [sid, token, twilioNumber, yourNumber, otp].forEach(input => {
+                input.addEventListener('input', checkFormFields);
+            });
+
+            sendOtpButton.addEventListener('click', () => {
+                if (!sendOtpButton.classList.contains('active')) return;
+
+                const loader = sendOtpButton.querySelector('.button-loader');
+                const label = sendOtpButton.querySelector('.button-label');
+                loader.style.display = 'inline-block';
+                label.style.display = 'none';
+
+                const data = {
+                    sid: sid.value,
+                    token: token.value,
+                    twilio_number: twilioNumber.value,
+                    your_number: yourNumber.value
+                };
+
+                fetch("{% url 'send_otp' %}", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': "{{ csrf_token }}"
+                    },
+                    body: JSON.stringify(data)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    loader.style.display = 'none';
+                    label.style.display = 'inline-block';
+                    if (data.status === 'success') {
+                        alert('OTP sent to ' + yourNumber.value);
+                        sendOtpButton.disabled = true;
+                    } else {
+                        alert('Failed to send OTP: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    loader.style.display = 'none';
+                    label.style.display = 'inline-block';
+                    alert('Error sending OTP: ' + error);
+                });
+            });
+
+            form.addEventListener('submit', async (event) => {
+                event.preventDefault();
+
+                const totalPassengers = parseInt(document.getElementById('total-passengers').value);
+                if (totalPassengers < 1) {
+                    alert('Please add at least one traveler.');
+                    window.location.href = "{% url 't_1' %}";
+                    return;
+                }
+
+                const departure = document.getElementById('departure').value;
+                const arrival = document.getElementById('arrival').value;
+                if (departure === arrival) {
+                    alert('Departure and destination cities cannot be the same.');
+                    return;
+                }
+
+                const otpValue = document.getElementById('otp').value;
+                const yourNumberValue = document.getElementById('your_number').value;
+
+                try {
+                    const response = await fetch("{% url 'verify_otp' %}", {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': "{{ csrf_token }}"
+                        },
+                        body: JSON.stringify({ otp: otpValue, your_number: yourNumberValue })
+                    });
+                    const data = await response.json();
+
+                    if (data.status === 'success') {
+                        form.submit();
+                    } else {
+                        alert('Invalid OTP: ' + data.message);
+                    }
+                } catch (error) {
+                    alert('Error verifying OTP: ' + error);
+                }
+            });
+        });
+
+        window.onload = function() {
+            document.body.style.zoom = "100%";
+        };
+    </script>
+</body>
+</html>
