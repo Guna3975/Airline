@@ -73,7 +73,7 @@ package-lock.json
 yarn.lock
 
 # Static root if you collectstatic to a directory
-static/
+
 
 # Docker
 *.pid
